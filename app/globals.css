@@ -1,26 +1,133 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ─────────────────────────────────────────────────────────────
+   PUPP'S — Design Tokens (Tailwind v4, CSS-first config)
+   Palette sampled from the reference comp: cream canvas, ink
+   black, sky-blue arch, sunflower yellow, orange, soft coral.
+   ───────────────────────────────────────────────────────────── */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Typography — fonts injected by next/font in app/layout.tsx */
+  --font-display: var(--font-lilita), "Arial Black", sans-serif;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  /* Surfaces */
+  --color-canvas: #ffffff;
+  --color-canvas-warm: #f5f1ea;
+  --color-paper: #ffffff;
+
+  /* Ink */
+  --color-ink: #111111;
+  --color-ink-soft: #2b2b2b;
+  --color-muted: #6b6b6b;
+  --color-line: #e7e5e4;
+  --color-footer: #1c1c1c;
+
+  /* Brand blocks */
+  --color-sky: #38bdf8;
+  --color-sky-soft: #bae6fd;
+  --color-sun: #fed230;
+  --color-sun-soft: #fff1b8;
+  --color-tangerine: #f97316;
+  --color-coral: #ff6b5b;
+  --color-coral-soft: #ffd9d3;
+  --color-peach: #f6d9c2;
+
+  /* Display type scale (retro condensed headlines) */
+  --text-display: 4.5rem;
+  --text-display--line-height: 0.95;
+  --text-h1: 3.25rem;
+  --text-h1--line-height: 1;
+  --text-h2: 2.5rem;
+  --text-h2--line-height: 1.05;
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.15;
+
+  /* Radii */
+  --radius-card: 1.25rem;
+  --radius-tile: 0.875rem;
+
+  /* Shadows — flat, sticker-like offsets (no glows) */
+  --shadow-sticker: 3px 3px 0 0 var(--color-ink);
+  --shadow-soft: 0 10px 30px -12px rgb(17 17 17 / 0.18);
+
+  /* Motion */
+  --animate-marquee: marquee 28s linear infinite;
+  --animate-heartbeat: heartbeat 1.4s ease-in-out infinite;
+  --animate-float: float 5s ease-in-out infinite;
+  --animate-spin-slow: spin 14s linear infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.18); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.12); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Custom utilities ───────────────────────────────────────── */
+
+/* Arch photo frame: full round top, card-radius bottom */
+@utility arch {
+  border-radius: 9999px 9999px var(--radius-card) var(--radius-card);
+}
+
+/* Faint graph-paper backdrop used behind sections in the comp */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(17 17 17 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(17 17 17 / 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+@utility container-site {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-lilita);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.015em;
+  }
+  ::selection {
+    background: var(--color-sun);
+    color: var(--color-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }
